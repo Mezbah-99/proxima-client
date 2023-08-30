@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useProjectContext } from '../hook/useProjectsContext';
+import { useAuthContext } from '../hook/useAuthContext';
 
 const ProjectForm = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
 
@@ -13,9 +14,16 @@ const ProjectForm = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
     const [emptyFields, setEmptyFields] = useState([]);
 
     const { dispatch } = useProjectContext();
+    
+    const { user } = useAuthContext();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if(!user){
+            setError('You must be logged in!')
+            return;
+        }
 
         // data
         const projectObj = { title, tech, budget, duration, manager, dev };
@@ -26,6 +34,7 @@ const ProjectForm = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
                 method: 'POST',
                 headers: {
                     'Content-type': "application/json",
+                    Authorization: `Bearer ${user.token}`
                 },
                 body: JSON.stringify(projectObj)
             });
@@ -58,6 +67,7 @@ const ProjectForm = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
                 method: 'PATCH',
                 headers: {
                     'Content-type': "application/json",
+                    Authorization: `Bearer ${user.token}`
                 },
                 body: JSON.stringify(projectObj)
             });
@@ -74,7 +84,7 @@ const ProjectForm = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
                 setEmptyFields([])
 
                 //dispatch
-                dispatch({type: 'UPDATE_PROJECT', payload: json})
+                dispatch({ type: 'UPDATE_PROJECT', payload: json })
                 console.log(json)
                 //close overlay and modal
                 setIsModalOpen(false)

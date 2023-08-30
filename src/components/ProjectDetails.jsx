@@ -1,5 +1,6 @@
 import { currencyFormatter } from "../utils/currencyFormattor"
 import { useProjectContext } from '../hook/useProjectsContext'
+import { useAuthContext } from '../hook/useAuthContext'
 import moment from "moment";
 import { useState } from "react";
 import ProjectForm from "./ProjectForm";
@@ -12,9 +13,21 @@ const ProjectDetails = ({ project }) => {
 
   const { dispatch } = useProjectContext();
 
+  const { user } = useAuthContext()
+  
   // Delete a project
   const deleteHandelar = async () => {
-    const res = await fetch(`http://localhost:5000/api/projects/${_id}`, { method: 'DELETE' })
+
+    if(!user){
+      return; // only return means => if not includes user then break this function
+    }
+
+    const res = await fetch(`http://localhost:5000/api/projects/${_id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    })
     const json = await res.json();
     dispatch({ type: 'DELETE_PROJECT', payload: json.project._id })
   }

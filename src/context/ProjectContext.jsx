@@ -30,12 +30,10 @@ const reducer = (state, action) => {
                 (project) => project._id === action.payload.project._id
               );
               return {
-                ...state,
+                //...state,
                 projects: [
                   action.payload.project,
-                  ...state.projects.filter( project =>  project._id !== existingProject._id
-                    
-                  ),
+                  ...state.projects.filter( project =>  project._id !== existingProject._id)
                 ],
               };
             }
