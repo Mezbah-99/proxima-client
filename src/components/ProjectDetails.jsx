@@ -22,7 +22,7 @@ const ProjectDetails = ({ project }) => {
       return; // only return means => if not includes user then break this function
     }
 
-    const res = await fetch(`http://localhost:5000/api/projects/${_id}`, {
+    const res = await fetch(`${import.meta.env.VITE_APP_BASE_URL}/api/projects/${_id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${user.token}`,

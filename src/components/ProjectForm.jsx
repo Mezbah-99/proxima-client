@@ -30,7 +30,7 @@ const ProjectForm = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
         // if there is no project , send post req
         if (!project) {
             // post request
-            const res = await fetch('http://localhost:5000/api/projects', {
+            const res = await fetch(`${import.meta.env.VITE_APP_BASE_URL}/api/projects`, {
                 method: 'POST',
                 headers: {
                     'Content-type': "application/json",
@@ -63,7 +63,7 @@ const ProjectForm = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
         // if there is a project, send patch req
         if (project) {
             // send patch req
-            const res = await fetch(`http://localhost:5000/api/projects/${project._id}`, {
+            const res = await fetch(`${import.meta.env.VITE_APP_BASE_URL}/api/projects/${project._id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-type': "application/json",
